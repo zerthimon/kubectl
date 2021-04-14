@@ -21,4 +21,6 @@ RUN apt-get -y update \
   && rm -rf \
     /var/lib/apt/lists/* \
     /tmp/* \
-    /var/tmp/*
+    /var/tmp/* \
+  && echo 'source <(/usr/bin/kubectl completion bash)' >> /etc/bash.bashrc \
+  && echo 'source <(/usr/sbin/helm completion bash)' >> /etc/bash.bashrc

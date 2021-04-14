@@ -3,6 +3,16 @@ FROM debian
 MAINTAINER Lior Goikhburg <goikhburg@gmail.com>
 
 RUN apt-get -y update \
+  && echo "tzdata tzdata/Areas select Europe" | debconf-set-selections \
+  && echo "tzdata tzdata/Zones/Etc select UTC" | debconf-set-selections \
+  && echo "tzdata tzdata/Zones/Europe select Moscow" | debconf-set-selections \
+  && echo "locales locales/default_environment_locale select en_US.UTF-8" | debconf-set-selections \
+  && echo "locales locales/locales_to_be_generated multiselect en_US.UTF-8 UTF-8, ru_RU.UTF-8 UTF-8" | debconf-set-selections \
+  && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install \
+    locales \
+    tzdata \
+  && rm -rf /etc/timezone /etc/localtime \
+  && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure tzdata \
   && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install \
     gnupg \
     ca-certificates \

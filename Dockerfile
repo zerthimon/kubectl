@@ -9,6 +9,7 @@ RUN apt-get -y update \
     apt-transport-https \
     wget \
     bash \
+    bash-completion \
   && wget -qO - https://baltocdn.com/helm/signing.asc | apt-key add - \
   && echo "deb [ arch=amd64 ] https://baltocdn.com/helm/stable/debian/ all main" > /etc/apt/sources.list.d/helm.list \
   && wget -qO - https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
@@ -22,5 +23,7 @@ RUN apt-get -y update \
     /var/lib/apt/lists/* \
     /tmp/* \
     /var/tmp/* \
+  && echo '' >> /etc/bash.bashrc \
+  && echo '. /etc/bash_completion' >> /etc/bash.bashrc \
   && echo 'source <(/usr/bin/kubectl completion bash)' >> /etc/bash.bashrc \
   && echo 'source <(/usr/sbin/helm completion bash)' >> /etc/bash.bashrc
